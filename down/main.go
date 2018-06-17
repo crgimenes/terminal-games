@@ -129,14 +129,19 @@ func copyUp(screen [][]cell) {
 	width, higth := term.Size()
 	for col := 0; col < width; col++ {
 		for row := 0; row < higth; row++ {
-			if screen[col][row].char == 'V' ||
-				screen[col][row].char == '*' {
+			if screen[col][row].char == 'V' {
 				if row-1 >= 0 {
 					screen[col][row-1] = screen[col][row]
 					screen[col][row-1].fg = screen[col][row].fg + 1
 					if screen[col][row-1].fg >= 8 {
 						screen[col][row-1].fg = 2
 					}
+				}
+				screen[col][row].char = ' '
+			}
+			if screen[col][row].char == '*' {
+				if row-1 >= 0 {
+					screen[col][row-1] = screen[col][row]
 				}
 				screen[col][row].char = ' '
 			}
