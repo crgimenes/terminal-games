@@ -15,6 +15,12 @@ type cell struct {
 	bg   term.Attribute
 }
 
+var (
+	difficulty      = 3
+	difficultyCount = 0
+	currentScore    = 0
+)
+
 func exit() {
 	term.Close()
 	os.Exit(0)
@@ -76,8 +82,15 @@ func main() {
 			}
 		case <-drawTick.C:
 			copyUp(screenBuffer)
-			for i := 0; i < 3; i++ {
+			for i := 0; i < difficulty; i++ {
 				addObstacle(screenBuffer)
+			}
+
+			currentScore++
+			difficultyCount++
+			if difficultyCount == 300 {
+				difficulty++
+				difficultyCount = 0
 			}
 
 			// collision detection
@@ -87,6 +100,11 @@ func main() {
 			}
 
 			screenBuffer[playerCol][higth/2].char = 'V'
+			printScreen(
+				screenBuffer, 0, 0,
+				term.ColorWhite,
+				term.ColorBlack,
+				fmt.Sprintf("Current score %v", currentScore))
 			draw(screenBuffer)
 		}
 	}
@@ -130,4 +148,16 @@ func addObstacle(screen [][]cell) {
 	w, h := term.Size()
 	w = rand.Intn(w - 1)
 	screen[w][h-1].char = '*'
+}
+
+func printScreen(
+	screen [][]cell,
+	col, row int,
+	fg, bg term.Attribute,
+	msg string) {
+	for c := 0; c < len(msg); c++ {
+		screen[col+c][row].char = rune(msg[c])
+		screen[col+c][row].fg = fg
+		screen[col+c][row].bg = bg
+	}
 }
