@@ -66,10 +66,6 @@ func main() {
 				switch ev.Key {
 				case term.KeyEsc:
 					exit()
-				case term.KeyArrowUp:
-					fmt.Println("Arrow Up pressed")
-				case term.KeyArrowDown:
-					fmt.Println("Arrow Down pressed")
 				case term.KeyArrowLeft:
 					playerCol--
 				case term.KeyArrowRight:
@@ -88,7 +84,7 @@ func main() {
 
 			currentScore++
 			difficultyCount++
-			if difficultyCount == 300 {
+			if difficultyCount == 100 {
 				difficulty++
 				difficultyCount = 0
 			}
